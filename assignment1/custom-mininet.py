@@ -42,37 +42,37 @@ class MyTopo( Topo ):
         num_hosts = 14
         hosts, switches = self.create_hosts_and_switches(num_hosts)
         
-        self.addLink(switches[0],switches[1],cls=TCLink)
-        self.addLink(switches[0],switches[3],cls=TCLink)
-        self.addLink(switches[0],switches[2],cls=TCLink,bw=0.01)
+        self.addLink(switches[0],switches[1])
+        self.addLink(switches[0],switches[3])
+        self.addLink(switches[0],switches[2])
 
-        self.addLink(switches[1],switches[2],cls=TCLink,bw=0.01)
-        self.addLink(switches[1],switches[7],cls=TCLink,bw=0.01)
+        self.addLink(switches[1],switches[2])
+        self.addLink(switches[1],switches[7])
 
-        self.addLink(switches[2],switches[5],cls=TCLink,bw=0.01)
+        self.addLink(switches[2],switches[5])
         
-        self.addLink(switches[3],switches[4],cls=TCLink,bw=0.04)
-        self.addLink(switches[3],switches[8],cls=TCLink,bw=0.01)
+        self.addLink(switches[3],switches[4])
+        self.addLink(switches[3],switches[8])
 
-        self.addLink(switches[4],switches[5],cls=TCLink,bw=0.04)
-        self.addLink(switches[4],switches[6],cls=TCLink,bw=0.01)
+        self.addLink(switches[4],switches[5])
+        self.addLink(switches[4],switches[6])
 
-        self.addLink(switches[5],switches[12],cls=TCLink,bw=0.01)
-        self.addLink(switches[5],switches[13],cls=TCLink,bw=0.01)
+        self.addLink(switches[5],switches[12])
+        self.addLink(switches[5],switches[13])
 
 
-        self.addLink(switches[6],switches[7],cls=TCLink,bw=0.01)
-        self.addLink(switches[7],switches[10],cls=TCLink,bw=0.04)
+        self.addLink(switches[6],switches[7])
+        self.addLink(switches[7],switches[10])
 
-        self.addLink(switches[8],switches[9],cls=TCLink,bw=0.01)
-        self.addLink(switches[8],switches[11],cls=TCLink,bw=0.01)
+        self.addLink(switches[8],switches[9])
+        self.addLink(switches[8],switches[11])
 
-        self.addLink(switches[9],switches[10],cls=TCLink,bw=0.01)
-        self.addLink(switches[9],switches[12],cls=TCLink,bw=0.01)
+        self.addLink(switches[9],switches[10])
+        self.addLink(switches[9],switches[12])
 
-        self.addLink(switches[10],switches[11],cls=TCLink,bw=0.01)
-        self.addLink(switches[10],switches[13],cls=TCLink,bw=0.01)
-        self.addLink(switches[11],switches[12],cls=TCLink,bw=0.01)
+        self.addLink(switches[10],switches[11])
+        self.addLink(switches[10],switches[13])
+        self.addLink(switches[11],switches[12])
 
 
     
@@ -88,7 +88,7 @@ class MyTopo( Topo ):
             switches.append(switch)
         
         for i in range(num_hosts):
-            self.addLink(hosts[i],switches[i],cls=TCLink,bw=1,) #1 Mbps
+            self.addLink(hosts[i],switches[i]) #1 Mbps
         
         return hosts, switches
 
