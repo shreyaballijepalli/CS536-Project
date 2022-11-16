@@ -1,11 +1,11 @@
 ### Commands to run
 
-1. ### Setup controller
+### Setup controller
 ```
 make controller
 ```
 
-2. ### Setup mininet
+### Setup mininet
 #### Custom topology
 ```
 ../scripts/mn-stratum --custom custom-mininet.py --topo=mytopo --link=tc
@@ -13,17 +13,17 @@ make controller
 
 #### Linear topology
 ```
-../scripts/mn-stratum --topo linear,5
+../scripts/mn-stratum --topo linear,12
 ```
 
-1. ### Setup onos cli
+### Setup onos cli
 ```
 make cli
 app activate fwd
 ```
 
 
-4. ### ONOS Controller Add Topology
+### ONOS Controller Add Topology
 
 #### Custom topology
 ```
