@@ -1,0 +1,8 @@
+../scripts/onos-cli
+Warning: Permanently added '[localhost]:8101' (RSA) to the list of known hosts.
+Password authentication
+Password: 
+Password authentication
+Password: 
+Password authentication
+Password: 

@@ -1,4 +1,4 @@
-### Commands
+### Commands to run inside project folder
 
 1. ### Setup controller
 ```
@@ -6,11 +6,17 @@ make controller
 ```
 
 2. ### Setup mininet
+#### Custom topology
 ```
 ../scripts/mn-stratum --custom custom-mininet.py --topo=mytopo --link=tc
 ```
 
-3. ### Setup onos cli
+#### Linear topology
+```
+../scripts/mn-stratum --topo linear,5
+```
+
+1. ### Setup onos cli
 ```
 make cli
 app activate fwd
@@ -27,4 +33,3 @@ topology
 links
 nodes
 ```
-

@@ -63,6 +63,9 @@ controller:
 cli:
 	$(SCRIPTS)/onos-cli
 
+cli-script:
+	$(SCRIPTS)/onos-cli-script
+
 netcfg:
 	$(SCRIPTS)/onos-netcfg cfg/netcfg.json
 
