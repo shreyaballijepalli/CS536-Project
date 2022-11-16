@@ -1,4 +1,4 @@
-### Commands
+### Commands to run inside project folder
 
 1. ### Setup controller
 ```
@@ -24,12 +24,21 @@ app activate fwd
 
 
 4. ### ONOS Controller Add Topology
+
+#### Custom topology
 ```
 ../scripts/onos-netcfg cfg/nsfcfg.json
 ```
+
+#### Linear topology
+```
+../scripts/onos-netcfg cfg/linearcfg.json
+```
+
 ### ONOS Cli Commands
 ```
 topology
 links
 nodes
+wipe-out please
 ```
