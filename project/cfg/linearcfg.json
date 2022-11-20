@@ -48,41 +48,6 @@
           "driver": "stratum-bmv2",
           "pipeconf": "org.onosproject.pipelines.basic"
         }
-      },
-      "device:s8": {
-        "basic": {
-          "managementAddress": "grpc://127.0.0.1:50008?device_id=1",
-          "driver": "stratum-bmv2",
-          "pipeconf": "org.onosproject.pipelines.basic"
-        }
-      },
-      "device:s9": {
-        "basic": {
-          "managementAddress": "grpc://127.0.0.1:50009?device_id=1",
-          "driver": "stratum-bmv2",
-          "pipeconf": "org.onosproject.pipelines.basic"
-        }
-      },
-      "device:s10": {
-        "basic": {
-          "managementAddress": "grpc://127.0.0.1:50010?device_id=1",
-          "driver": "stratum-bmv2",
-          "pipeconf": "org.onosproject.pipelines.basic"
-        }
-      },
-      "device:s11": {
-        "basic": {
-          "managementAddress": "grpc://127.0.0.1:50011?device_id=1",
-          "driver": "stratum-bmv2",
-          "pipeconf": "org.onosproject.pipelines.basic"
-        }
-      },
-      "device:s12": {
-        "basic": {
-          "managementAddress": "grpc://127.0.0.1:50012?device_id=1",
-          "driver": "stratum-bmv2",
-          "pipeconf": "org.onosproject.pipelines.basic"
-        }
       }
     }
   }
