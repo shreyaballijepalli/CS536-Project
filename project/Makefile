@@ -26,6 +26,8 @@ default: client-server
 SCRIPTS = ../scripts
 
 export name ?=
+export source ?=
+export destination ?=
 
 MAKEFLAGS += --no-print-directory
 
@@ -72,6 +74,19 @@ netcfg:
 # Usage: make host name=h1
 host:
 	$(SCRIPTS)/utils/mn-stratum/exec $(name)
+
+ping:
+	$(SCRIPTS)/utils/mn-stratum/ping $(source) $(destination)
+
+ping-unlimited:
+	$(SCRIPTS)/utils/mn-stratum/ping-unlimited $(source) $(destination)
+
+iperf-client:
+	$(SCRIPTS)/utils/mn-stratum/iperf-client $(source) $(destination)
+
+iperf-server:
+	$(SCRIPTS)/utils/mn-stratum/iperf-server $(source)
+
 
 
 ####################################################################

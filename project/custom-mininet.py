@@ -42,37 +42,38 @@ class MyTopo( Topo ):
         num_hosts = 14
         hosts, switches = self.create_hosts_and_switches(num_hosts)
         
-        self.addLink(switches[0],switches[1])
-        self.addLink(switches[0],switches[3])
-        self.addLink(switches[0],switches[2])
+        b = 5000
+        self.addLink(switches[0],switches[1],bw = b)
+        self.addLink(switches[0],switches[3],bw = b)
+        self.addLink(switches[0],switches[2],bw = b)
 
-        self.addLink(switches[1],switches[2])
-        self.addLink(switches[1],switches[7])
+        self.addLink(switches[1],switches[2],bw = b)
+        self.addLink(switches[1],switches[7],bw = b)
 
-        self.addLink(switches[2],switches[5])
+        self.addLink(switches[2],switches[5],bw = b)
         
-        self.addLink(switches[3],switches[4])
-        self.addLink(switches[3],switches[8])
+        self.addLink(switches[3],switches[4],bw = b)
+        self.addLink(switches[3],switches[8],bw = b)
 
-        self.addLink(switches[4],switches[5])
-        self.addLink(switches[4],switches[6])
+        self.addLink(switches[4],switches[5],bw = b)
+        self.addLink(switches[4],switches[6],bw = b)
 
-        self.addLink(switches[5],switches[12])
-        self.addLink(switches[5],switches[13])
+        self.addLink(switches[5],switches[12],bw = b)
+        self.addLink(switches[5],switches[13],bw = b)
 
 
-        self.addLink(switches[6],switches[7])
-        self.addLink(switches[7],switches[10])
+        self.addLink(switches[6],switches[7],bw = b)
+        self.addLink(switches[7],switches[10],bw = b)
 
-        self.addLink(switches[8],switches[9])
-        self.addLink(switches[8],switches[11])
+        self.addLink(switches[8],switches[9],bw = b)
+        self.addLink(switches[8],switches[11],bw = b)
 
-        self.addLink(switches[9],switches[10])
-        self.addLink(switches[9],switches[12])
+        self.addLink(switches[9],switches[10],bw = b)
+        self.addLink(switches[9],switches[12],bw = b)
 
-        self.addLink(switches[10],switches[11])
-        self.addLink(switches[10],switches[13])
-        self.addLink(switches[11],switches[12])
+        self.addLink(switches[10],switches[11],bw = b)
+        self.addLink(switches[10],switches[13],bw = b)
+        self.addLink(switches[11],switches[12],bw = b)
 
 
     
