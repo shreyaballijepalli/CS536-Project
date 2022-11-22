@@ -8,7 +8,9 @@ from mininet.log import setLogLevel
 import csv
 
 #Update this based on number of hosts
-num_hosts = 7
+num_hosts = 4
+#Update this based on topology file name
+topology_file = "topology_3_2.csv"
 
 
 class MyTopo( Topo ):
@@ -86,7 +88,7 @@ class MyTopo( Topo ):
 
     def read_topology_from_file(self):
         hosts, switches = self.create_hosts_and_switches(num_hosts)
-        with open('topology.csv') as csvfile:
+        with open(topology_file) as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 print(row)
@@ -109,7 +111,7 @@ class MyTopo( Topo ):
             switches.append(switch)
         
         for i in range(num_hosts):
-            self.addLink(hosts[i],switches[i],cls=TCLink,bw=0.8)
+            self.addLink(hosts[i],switches[i],cls=TCLink,bw=1)
         
         return hosts, switches
 
