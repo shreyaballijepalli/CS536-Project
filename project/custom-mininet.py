@@ -5,6 +5,11 @@ from mininet.node import CPULimitedHost
 from mininet.link import TCLink
 from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel
+import csv
+
+#Update this based on number of hosts
+num_hosts = 7
+
 
 class MyTopo( Topo ):
 
@@ -15,6 +20,8 @@ class MyTopo( Topo ):
 
         if topology == 'nsf':
             self.nsf_topology()
+        else:
+            self.read_topology_from_file()
 
 
     #   node0.port[0] <--> Channel10kbps <--> node1.port[0];
@@ -76,6 +83,19 @@ class MyTopo( Topo ):
         self.addLink(switches[11],switches[12],bw = b)
 
 
+
+    def read_topology_from_file(self):
+        hosts, switches = self.create_hosts_and_switches(num_hosts)
+        with open('topology.csv') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                print(row)
+                src = int(row['src'])
+                dst = int(row['dst'])
+                bandwidth = float(row['bandwidth'])
+                self.addLink(switches[src],switches[dst],bw=bandwidth,
+                cls=TCLink)
+
     
     def create_hosts_and_switches(self, num_hosts):
         hosts = []
@@ -95,4 +115,4 @@ class MyTopo( Topo ):
 
 
 
-topos = { 'mytopo': ( lambda: MyTopo('nsf') ) }
+topos = { 'mytopo': ( lambda: MyTopo('custom') ) }
