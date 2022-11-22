@@ -3,7 +3,7 @@
 MN_STRATUM_DOCKER_NAME=${MN_STRATUM_DOCKER_NAME:-mn-stratum}
 HOST_NAME=$1
 
-docker exec -it $MN_STRATUM_DOCKER_NAME \
+docker exec -d $MN_STRATUM_DOCKER_NAME \
   /bin/bash -c \
   "mkdir -p /run/netns; \
   touch /run/netns/$HOST_NAME >/dev/null 2>&1; \

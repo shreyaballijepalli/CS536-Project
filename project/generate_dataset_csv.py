@@ -1,12 +1,15 @@
+import sys
 import random
 import subprocess
 import signal
 import time
 import os
+import psutil
 
 import pandas as pd
 
 def execute(src,dest):
+    print("Execute ",src, ", ",dest)
     proc = subprocess.Popen(
         # Let it ping more times to run longer.
         ['make','ping-unlimited','source='+src,'destination='+dest],
@@ -16,9 +19,30 @@ def execute(src,dest):
     )
     return proc
 
+def kill_process(src,dst):
+    name = "{src:s} ping {dst:s}".format(src=src,dst=dst)
+    child = subprocess.Popen(['pgrep','-f',name], stdout=subprocess.PIPE, shell=False)
+    result = child.communicate()[0]
+    pid = int(result)
+    print("Terminating ",pid)
+    p = psutil.Process(pid)
+    p.terminate()
+
+def kill_iperf(src):
+    name = "{src:s} iperf".format(src=src)
+    child = subprocess.Popen(['pgrep','-f',name], stdout=subprocess.PIPE, shell=False)
+    result = child.communicate()[0]
+    pid = int(result)
+    print("Terminating ",pid)
+    p = psutil.Process(pid)
+    p.terminate()
+
 # Change this
-no_hosts = 4
-zero_indexed=False
+no_hosts = 5
+zero_indexed=True
+
+bw = sys.argv[1]
+print('bandwidth:', bw)
 
 if zero_indexed:
     start=0
@@ -28,9 +52,10 @@ else:
 hosts = ['h'+str(i) for i in range(start,no_hosts+start)]
 addresses = ['10.0.0.'+str(i+1) for i in range(no_hosts)]
 
-ping_destinations = [random.choices(['10.0.0.'+str(i+1) for i in range(no_hosts) if i!=x],k=2) for x in range(no_hosts)]
+ping_destinations = [list(set(random.sample(['10.0.0.'+str(i+1) for i in range(no_hosts) if i!=x],k=4)))[:2] for x in range(no_hosts)]
 
 processes=[]
+
 for i in range(no_hosts): 
     processes.append(execute(hosts[i],ping_destinations[i][0]))
     processes.append(execute(hosts[i],ping_destinations[i][1]))
@@ -38,16 +63,17 @@ for i in range(no_hosts):
 data=[]
 for i in range(len(hosts)):
     server = hosts[i]
-    for j in range(i+1,len(hosts)):
-        proc = subprocess.Popen(
-            # Let it ping more times to run longer.
+    proc = subprocess.Popen(
             ['make','iperf-server','source='+server],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
         )
-        time.sleep(1)
-        op = os.popen('make iperf-client source={} destination={}'.format(hosts[j], addresses[i])).read().split('\n')
+    time.sleep(1)
+    for j in range(i+1,len(hosts)):
+        command = 'make iperf-client source={} destination={} bandwidth={}'.format(hosts[j], addresses[i], bw)
+        print(command)
+        op = os.popen(command).read().split('\n')
         op = [x for x in op if '%' in x]
 
         server_to_client = op[1].split()
@@ -68,10 +94,12 @@ for i in range(len(hosts)):
         data.append([hosts[j][1:],server[1:],packets,bandwidth,delay,jitter,loss])
 df = pd.DataFrame(data)
 df.columns=['src','dst','PktsGen','AvgBw','AvgDelay','jitter','loss']
-print(df)
-df.to_csv('metrics.csv',index=False)
+df.to_csv('metrics/'+sys.argv[2]+'.csv',index=False)
 print('Done')
 
-for proc in processes:
-    os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
+for i in range(no_hosts):
+    kill_process(hosts[i],ping_destinations[i][0])
+    kill_process(hosts[i],ping_destinations[i][1])
 
+for i in range(no_hosts):
+    kill_iperf(hosts[i])

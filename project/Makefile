@@ -28,6 +28,7 @@ SCRIPTS = ../scripts
 export name ?=
 export source ?=
 export destination ?=
+export bandwidth ?=
 
 MAKEFLAGS += --no-print-directory
 
@@ -82,7 +83,7 @@ ping-unlimited:
 	$(SCRIPTS)/utils/mn-stratum/ping-unlimited $(source) $(destination)
 
 iperf-client:
-	$(SCRIPTS)/utils/mn-stratum/iperf-client $(source) $(destination)
+	$(SCRIPTS)/utils/mn-stratum/iperf-client $(source) $(destination) $(bandwidth)
 
 iperf-server:
 	$(SCRIPTS)/utils/mn-stratum/iperf-server $(source)

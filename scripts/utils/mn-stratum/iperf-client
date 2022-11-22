@@ -3,6 +3,7 @@
 MN_STRATUM_DOCKER_NAME=${MN_STRATUM_DOCKER_NAME:-mn-stratum}
 HOST_NAME=$1
 DESTINATION=$2
+BANDWIDTH=$3
 
 docker exec -it $MN_STRATUM_DOCKER_NAME \
   /bin/bash -c \
@@ -10,5 +11,5 @@ docker exec -it $MN_STRATUM_DOCKER_NAME \
   touch /run/netns/$HOST_NAME >/dev/null 2>&1; \
   PID=\$(ps -ef | awk '\$12 ~ /mininet:$HOST_NAME/ {print \$2;exit}'); \
   mount -o bind /proc/\$PID/ns/net /run/netns/$HOST_NAME; \
-  ip netns exec $HOST_NAME iperf -c $DESTINATION -u -d -t 1 "
+  ip netns exec $HOST_NAME iperf -c $DESTINATION -u -d -t 1 -b $BANDWIDTH"
 
