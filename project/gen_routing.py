@@ -3,7 +3,7 @@ import csv
 with open('paths.txt') as f:
     paths = f.read().splitlines()
 
-subractone = True
+subractone = False
 with open('routing.csv', 'w') as f:
     header = ['src','dst','path']
     writer = csv.writer(f)
@@ -24,9 +24,12 @@ with open('routing.csv', 'w') as f:
                 device2 = str(int(device2) - 1)
             if i == 0:
                 src = device1
+                f_path.append(src)
             
             if i == len(segments) - 1:
                 dst = device2
+                f_path.append(dst)
+            
             
             if i<len(segments) - 1:
                 f_path.append(device2)

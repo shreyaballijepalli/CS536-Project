@@ -10,7 +10,7 @@ import csv
 #Update this based on number of hosts
 num_hosts = 4
 #Update this based on topology file name
-topology_file = "topology_3_2.csv"
+topology_file = "data/train/4/topology_3_3/topology.csv"
 
 
 class MyTopo( Topo ):

@@ -38,7 +38,7 @@ def kill_iperf(src):
     p.terminate()
 
 # Change this
-no_hosts = 5
+no_hosts = 4
 zero_indexed=True
 
 bw = sys.argv[1]
@@ -96,6 +96,12 @@ df = pd.DataFrame(data)
 df.columns=['src','dst','PktsGen','AvgBw','AvgDelay','jitter','loss']
 df.to_csv('metrics/'+sys.argv[2]+'.csv',index=False)
 print('Done')
+
+for proc in processes:
+    proc.terminate()
+    time.sleep(0.5)
+    proc.poll()
+    del proc
 
 for i in range(no_hosts):
     kill_process(hosts[i],ping_destinations[i][0])
