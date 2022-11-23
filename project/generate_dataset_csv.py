@@ -37,8 +37,31 @@ def kill_iperf(src):
     p = psutil.Process(pid)
     p.terminate()
 
+def get_iperf_metrics(data, server, hosts, j):
+    command = 'make iperf-client source={} destination={} bandwidth={}'.format(hosts[j], addresses[i], bw)
+    print(command)
+    op = os.popen(command).read().split('\n')
+    op = [x for x in op if '%' in x]
+
+    server_to_client = op[1].split()
+    jitter = float(server_to_client[-5])
+    bandwidth = float(server_to_client[-7])
+    loss = float(server_to_client[-3][:-1]) # to remove /  from /0
+    packets = float(server_to_client[-2])
+    ping_op = os.popen('make ping source={} destination={}'.format(server,addresses[j])).read().split()
+    delay = float(ping_op[-2].split('/')[1])
+    data.append([server[1:],hosts[j][1:],packets,bandwidth,delay,jitter,loss])
+    
+    
+    client_to_server = op[0].split()
+    jitter = float(client_to_server[-5])
+    bandwidth = float(client_to_server[-7])
+    loss = float(client_to_server[-3][:-1]) # to remove /  from /0
+    packets = float(client_to_server[-2])
+    data.append([hosts[j][1:],server[1:],packets,bandwidth,delay,jitter,loss])
+
 # Change this
-no_hosts = 4
+no_hosts = 8
 zero_indexed=True
 
 bw = sys.argv[1]
@@ -71,27 +94,16 @@ for i in range(len(hosts)):
         )
     time.sleep(1)
     for j in range(i+1,len(hosts)):
-        command = 'make iperf-client source={} destination={} bandwidth={}'.format(hosts[j], addresses[i], bw)
-        print(command)
-        op = os.popen(command).read().split('\n')
-        op = [x for x in op if '%' in x]
+        for retry in range(3):
+            try:
+                get_iperf_metrics(data, server, hosts, j)
+            except:
+                print("Exception in iperf, retrying")
+                continue
+            break
 
-        server_to_client = op[1].split()
-        jitter = float(server_to_client[-5])
-        bandwidth = float(server_to_client[-7])
-        loss = float(server_to_client[-3][:-1]) # to remove /  from /0
-        packets = float(server_to_client[-2])
-        ping_op = os.popen('make ping source={} destination={}'.format(server,addresses[j])).read().split()
-        delay = float(ping_op[-2].split('/')[1])
-        data.append([server[1:],hosts[j][1:],packets,bandwidth,delay,jitter,loss])
-        
-        
-        client_to_server = op[0].split()
-        jitter = float(client_to_server[-5])
-        bandwidth = float(client_to_server[-7])
-        loss = float(client_to_server[-3][:-1]) # to remove /  from /0
-        packets = float(client_to_server[-2])
-        data.append([hosts[j][1:],server[1:],packets,bandwidth,delay,jitter,loss])
+
+
 df = pd.DataFrame(data)
 df.columns=['src','dst','PktsGen','AvgBw','AvgDelay','jitter','loss']
 df.to_csv('metrics/'+sys.argv[2]+'.csv',index=False)
