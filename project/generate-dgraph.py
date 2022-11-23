@@ -35,7 +35,7 @@ def read_topology(topology_file,graph):
         for row in reader:
             src = int(row['src'])
             dst = int(row['dst'])
-            bw = float(row['bandwidth'])
+            bw = float(row['bandwidth']) * pow(10,6) #to convert from Mb/s to b/s
             qsize = int(row['queueSize'])
             graph[src][dst] = Link(bw, qsize)
             graph[dst][src] = Link(bw, qsize)
@@ -49,9 +49,9 @@ def read_flows(flows_file,flows):
             src = int(row['src'])
             dst = int(row['dst'])
             packets = float(row['PktsGen'])
-            avgBw = float(row['AvgBw']) * pow(10,6) #to get in bits/sec
-            delay = float(row['AvgDelay'])
-            jitter = float(row['jitter'])
+            avgBw = float(row['AvgBw']) * pow(10,3) #to convert from Kb/sec to bits/sec
+            delay = float(row['AvgDelay']) / pow(10,3) #to convert to sec
+            jitter = float(row['jitter'])/ pow(10,3) #to convert to sec
             loss = float(row['loss'])
             flows[src][dst] = Flow(packets,avgBw,delay,jitter,loss)
     return flows
