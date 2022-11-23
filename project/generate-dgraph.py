@@ -135,6 +135,7 @@ if __name__ == "__main__":
         print(routing_file)
         print(flow_file)
         D_G = getDGraph(num_nodes,topology_file,flow_file,routing_file)
+        print(D_G)
     
     # D_G_1 = getDGraph(4,"data/train/4/topology_3_3/topology.csv",
     # "data/train/4/topology_3_3/4m.csv","data/train/4/topology_3_3/routing.csv")

@@ -8,9 +8,9 @@ from mininet.log import setLogLevel
 import csv
 
 #Update this based on number of hosts
-num_hosts = 4
+num_hosts = 6
 #Update this based on topology file name
-topology_file = "data/train/4/topology_3_3/topology.csv"
+topology_file = "data/train/6/topology_1_3/topology.csv"
 
 
 class MyTopo( Topo ):

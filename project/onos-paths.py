@@ -1,4 +1,4 @@
-num_hosts = 4
+num_hosts = 6
 path_command = "paths device:{switch1:s} device:{switch2:s}"
 f = open("path_commands.txt", "w")
 
