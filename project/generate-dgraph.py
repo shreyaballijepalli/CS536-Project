@@ -1,6 +1,7 @@
 import networkx as nx
 import csv
 import os
+import glob
 
 class Link:
     def __init__(self, bw, qsize):
@@ -72,16 +73,16 @@ def get_subdirectories(dir):
     input_files_list = []
     topology_file = "topology.csv"
     routing_file = "routing.csv"
-    flow_files = ["1m","2m","3m","4m","5m","6m","7m","8m","9m","10m"]
     folders = [ f.path for f in os.scandir(dir) if f.is_dir()]
     for folder in folders:
         num_nodes = folder.split("/")[-1]
         file_list = os.listdir(folder)
         subfolders = [ f.path for f in os.scandir(folder) if f.is_dir()]
         for subfolder in subfolders:
+            flow_files = glob.glob(subfolder+"/"+"*m.csv")
             for flow_file in flow_files:
                 input_files = InputFiles(num_nodes,subfolder+"/"+topology_file,
-                subfolder+"/"+flow_file+".csv", subfolder+"/"+routing_file)
+                flow_file, subfolder+"/"+routing_file)
                 input_files_list.append(input_files)
     
     return input_files_list
@@ -124,7 +125,7 @@ def getDGraph(num_nodes, topology_file, flows_file, routing_file):
     return D_G
 
 if __name__ == "__main__":
-    input_files_list = get_subdirectories("data/train")
+    input_files_list = get_subdirectories("data/test")
     for input_files in input_files_list:
         num_nodes = int(input_files.num_nodes)
         topology_file = input_files.topology_file
