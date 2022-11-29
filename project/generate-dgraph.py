@@ -2,6 +2,11 @@ import networkx as nx
 import csv
 import os
 import glob
+import holoviews as hv
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
 
 class Link:
     def __init__(self, bw, qsize):
@@ -76,7 +81,6 @@ def get_subdirectories(dir):
     folders = [ f.path for f in os.scandir(dir) if f.is_dir()]
     for folder in folders:
         num_nodes = folder.split("/")[-1]
-        file_list = os.listdir(folder)
         subfolders = [ f.path for f in os.scandir(folder) if f.is_dir()]
         for subfolder in subfolders:
             flow_files = glob.glob(subfolder+"/"+"*m.csv")
@@ -99,7 +103,7 @@ def getDGraph(num_nodes, topology_file, flows_file, routing_file):
     flows = read_flows(flows_file,flows)
     # print(flows)
     routing_matrix = read_routing_matrix(routing_file,routing_matrix)
-    # print(routing_matrix)
+    print(routing_matrix)
 
     for src in range(num_nodes):
         for dst in range(num_nodes):
@@ -125,18 +129,42 @@ def getDGraph(num_nodes, topology_file, flows_file, routing_file):
     return D_G
 
 if __name__ == "__main__":
-    input_files_list = get_subdirectories("data/test")
+    input_files_list = get_subdirectories("data/train")
+    min_v = pow(10,12)
+    max_v = 0
     for input_files in input_files_list:
         num_nodes = int(input_files.num_nodes)
         topology_file = input_files.topology_file
         routing_file = input_files.routing_file
         flow_file = input_files.flow_file
-        print(num_nodes)
-        print(topology_file)
-        print(routing_file)
-        print(flow_file)
-        D_G = getDGraph(num_nodes,topology_file,flow_file,routing_file)
-        print(D_G)
+        df = pd.read_csv(flow_file)
+        # print(flow_file)
+        # print(df)
+        min_v = min(min_v,min(df['AvgDelay']))
+        max_v = max(max_v,max(df['AvgDelay']))
+
+        if len(df[df['AvgDelay'] == 0]) > 0:
+            print(flow_file)
+        # df.loc[df['AvgBw']<10,'AvgBw'] = df[df['AvgBw']<10]['AvgBw']*1000
+        # df.to_csv(flow_file, index=False)
+        # print(num_nodes)
+        # print(topology_file)
+        # print(routing_file)
+        # print(flow_file)
+        # D_G = getDGraph(num_nodes,topology_file,flow_file,routing_file)
+        # print(D_G)
+        # print(D_G.nodes)
+        # print(D_G.edges)
+        # nx.draw(D_G, nx.spring_layout(D_G))
+        # plt.show()
+        # G=nx.Graph()
+        # ndxs = [1,2,3,4]
+        # G.add_nodes_from(ndxs)
+        # G.add_weighted_edges_from( [(1,2,0), (1,3,1) , (1,4,-1) , (2,4,1) , (2,3,-1), (3,4,10) ] ) 
+        # print(G)
+        # nx.draw(D_G, nx.spring_layout(D_G))
+        # plt.show()
+        # break
     
     # D_G_1 = getDGraph(4,"data/train/4/topology_3_3/topology.csv",
     # "data/train/4/topology_3_3/4m.csv","data/train/4/topology_3_3/routing.csv")
@@ -144,3 +172,5 @@ if __name__ == "__main__":
     # "data/train/4/topology_1_3/4m.csv","data/train/4/topology_1_3/routing.csv")
     # print(D_G_1.edges)
     # print(D_G_2.edges)
+    print(min_v)
+    print(max_v)
